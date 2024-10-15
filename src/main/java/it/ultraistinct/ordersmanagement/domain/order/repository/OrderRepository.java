@@ -1,4 +1,4 @@
-package it.ultraistinct.ordersmanagement.database.repository;
+package it.ultraistinct.ordersmanagement.domain.order.repository;
 
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 

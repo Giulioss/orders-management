@@ -1,6 +1,6 @@
-package it.ultraistinct.ordersmanagement.database.service;
+package it.ultraistinct.ordersmanagement.domain.order.service;
 
-import it.ultraistinct.ordersmanagement.database.repository.OrderRepository;
+import it.ultraistinct.ordersmanagement.domain.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

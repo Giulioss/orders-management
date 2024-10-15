@@ -1,4 +1,4 @@
-package it.ultraistinct.ordersmanagement.database.enums;
+package it.ultraistinct.ordersmanagement.domain.enums;
 
 import lombok.Getter;
 

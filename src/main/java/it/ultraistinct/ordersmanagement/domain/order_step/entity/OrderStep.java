@@ -1,4 +1,4 @@
-package it.ultraistinct.ordersmanagement.database.entity;
+package it.ultraistinct.ordersmanagement.domain.order_step.entity;
 
 import lombok.Getter;
 import lombok.Setter;
