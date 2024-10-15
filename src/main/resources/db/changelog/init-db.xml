@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+
+    <changeSet id="1729006041137-1" author="Giulio Galletti" failOnError="true">
+        <createTable tableName="client">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_client"/>
+            </column>
+            <column name="company_name" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="vat_number" type="VARCHAR(11)"/>
+            <column name="fiscal_code" type="VARCHAR(16)"/>
+        </createTable>
+
+        <createTable tableName="order">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_order"/>
+            </column>
+            <column name="order_status" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_date_time" type="DATETIME"/>
+            <column name="end_date_time" type="DATETIME"/>
+            <column name="note" type="TEXT"/>
+
+            <column name="client_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_order_client"
+                             referencedTableName="client" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="order_step">
+            <column name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_order_step"/>
+            </column>
+
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_order_step_order"
+                             referencedTableName="order" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

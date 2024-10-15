@@ -12,5 +12,6 @@ public class Client {
     private Long id;
 
     private String companyName;
-    private String vatNumberOfFiscalCode;
+    private String vatNumber;
+    private String fiscalCode;
 }

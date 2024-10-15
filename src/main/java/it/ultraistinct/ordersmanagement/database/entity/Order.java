@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -16,7 +16,16 @@ public class Order {
 
     private Long clientId;
 
-    private OrderStatusEnum orderStatus;
-    private OffsetDateTime startDateTime;
+    private String orderStatus;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
     private String note;
+
+    public OrderStatusEnum getOrderStatus() {
+        return OrderStatusEnum.fromString(this.orderStatus);
+    }
+
+    public void setOrderStatus(OrderStatusEnum orderStatus) {
+        this.orderStatus = orderStatus.name();
+    }
 }
