@@ -1,6 +1,6 @@
 package it.ultraistinct.ordersmanagement.config.security;
 
-import it.ultraistinct.ordersmanagement.config.JwtProperties;
+import it.ultraistinct.ordersmanagement.config.SecurityProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,14 +17,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BeansConfig {
 
-    private final JwtProperties jwtProperties;
+    private final SecurityProperties securityProperties;
 
     @Bean
     public CorsFilter corsFilter() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         final CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Collections.singletonList(jwtProperties.getCorsAllowedOrigin()));
+        config.setAllowedOrigins(Collections.singletonList(securityProperties.getCorsAllowedOrigin()));
         config.setAllowedHeaders(List.of(
                 "*"
         ));

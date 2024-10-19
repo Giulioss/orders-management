@@ -7,9 +7,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("application.security")
 @Getter
 @AllArgsConstructor
-public class JwtProperties {
+public class SecurityProperties {
 
     private String corsAllowedOrigin;
+    private Jwt jwtProperties;
 
     @Getter
     @AllArgsConstructor

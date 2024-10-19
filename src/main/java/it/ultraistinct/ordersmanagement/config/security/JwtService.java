@@ -4,9 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import it.ultraistinct.ordersmanagement.config.SecurityProperties;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
@@ -24,11 +24,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class JwtService {
 
-    @Value("${application.security.jwt.expiration}")
-    private long jwtExpiration;
-
-    @Value("${application.security.jwt.secret-key}")
-    private String secretKey;
+    private final SecurityProperties securityProperties;
 
     private final ReactiveUserDetailsService reactiveUserDetailsService;
 
@@ -67,7 +63,7 @@ public class JwtService {
     }
 
     public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
-        return buildToken(claims, userDetails, jwtExpiration);
+        return buildToken(claims, userDetails, securityProperties.getJwtProperties().getExpiration());
     }
 
     private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long jwtExpiration) {
@@ -99,7 +95,7 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        byte[] keyBytes = Decoders.BASE64.decode(securityProperties.getJwtProperties().getSecretKey());
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
