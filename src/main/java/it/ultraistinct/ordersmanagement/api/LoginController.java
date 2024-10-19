@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     @GetMapping
-    public ResponseEntity<String> login() {
-        return ResponseEntity.ok("OK");
+    public ResponseEntity<Void> login() {
+        return ResponseEntity.ok().build();
     }
 }
