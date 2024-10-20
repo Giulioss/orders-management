@@ -17,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -35,7 +33,7 @@ public class AuthServiceFacade {
         )).map(authentication -> {
             var user = (User) authentication.getPrincipal();
 
-            var jwtToken = jwtService.generateToken(new HashMap<>(), user);
+            var jwtToken = jwtService.buildToken(user);
             return LoginResponse.builder()
                     .token(jwtToken)
                     .build();

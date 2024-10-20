@@ -5,9 +5,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import it.ultraistinct.ordersmanagement.config.SecurityProperties;
+import it.ultraistinct.ordersmanagement.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,10 +41,6 @@ public class JwtService {
                 .hasElement();
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
-    }
-
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
@@ -62,21 +58,15 @@ public class JwtService {
                 .getBody();
     }
 
-    public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
-        return buildToken(claims, userDetails, securityProperties.getJwt().getExpiration());
-    }
-
-    private String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, long jwtExpiration) {
-        var authorities = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .toList();
+    public String buildToken(User userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", userDetails.getRole());
 
         return Jwts.builder()
-                .setClaims(extraClaims)
+                .setClaims(claims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
-                .claim("authorities", authorities)
+                .setExpiration(new Date(System.currentTimeMillis() + securityProperties.getJwt().getExpiration()))
                 .signWith(getSignInKey())
                 .compact();
     }
