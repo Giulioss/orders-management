@@ -17,6 +17,8 @@ public class User implements UserDetails {
     private static final String ROLE_PREFIX = "ROLE_";
 
     @Id
+    private Long id;
+
     private String username;
 
     private String password;

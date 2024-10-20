@@ -7,7 +7,7 @@
 
     <changeSet id="1729006041137-1" author="Giulio Galletti" failOnError="true">
         <createTable tableName="client">
-            <column name="id" type="BIGINT">
+            <column name="id" type="BIGSERIAL">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_client"/>
             </column>
             <column name="company_name" type="VARCHAR(500)">
@@ -18,7 +18,7 @@
         </createTable>
 
         <createTable tableName="order">
-            <column name="id" type="BIGINT">
+            <column name="id" type="BIGSERIAL">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_order"/>
             </column>
             <column name="order_status" type="VARCHAR(30)">
@@ -35,7 +35,7 @@
         </createTable>
 
         <createTable tableName="order_step">
-            <column name="id" type="BIGINT">
+            <column name="id" type="BIGSERIAL">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_order_step"/>
             </column>
 
@@ -46,8 +46,12 @@
         </createTable>
 
         <createTable tableName="user">
-            <column name="username" type="VARCHAR(255)">
+            <column name="id" type="BIGSERIAL">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_user"/>
+            </column>
+
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UK_username"/>
             </column>
 
             <column name="password" type="VARCHAR(500)">
