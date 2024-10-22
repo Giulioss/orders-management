@@ -2,6 +2,7 @@ package it.ultraistinct.ordersmanagement.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
@@ -17,6 +18,8 @@ public class WebFluxConfig implements WebFluxConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(securityProperties.getCorsAllowedOrigin())
                 .allowedMethods(CorsConfiguration.ALL)
+                .exposedHeaders(HttpHeaders.AUTHORIZATION)
+                .allowCredentials(true)
                 .maxAge(3600);
     }
 

@@ -25,7 +25,7 @@ public class WebConfig {
 
     // TODO Giulio Galletti 15/10/2024: Inserire i giusti endpoints
     private static final String[] publicEndpoints = new String[]{
-            "/**"
+            "/auth/login"
     };
 
     // TODO Giulio Galletti 15/10/2024: Inserire i giusti endpoints
@@ -43,7 +43,7 @@ public class WebConfig {
                 )
                 .authenticationManager(authenticationManager())
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance()) // Stateless session
-                .addFilterAt(jwtFilter, SecurityWebFiltersOrder.FIRST)
+                .addFilterAt(jwtFilter, SecurityWebFiltersOrder.AUTHORIZATION)
                 .build();
     }
 

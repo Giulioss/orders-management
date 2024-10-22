@@ -30,8 +30,8 @@ public class AuthServiceFacade {
     public Mono<LoginResponse> authenticate(LoginRequest request) {
         return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(), request.getPassword()
-        )).map(authentication -> {
-            var user = (User) authentication.getPrincipal();
+        )).flatMap(authentication -> this.userService.findByUsername(request.getUsername()))
+           .map(user -> {
 
             var jwtToken = jwtService.buildToken(user);
             return LoginResponse.builder()
