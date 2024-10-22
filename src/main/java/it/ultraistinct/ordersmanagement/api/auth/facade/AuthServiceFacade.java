@@ -58,11 +58,11 @@ public class AuthServiceFacade {
         return userService.findByUsername(loginRequest.getUsername())
                 .flatMap(user -> Mono.error(new RuntimeException("Utente già registrato")))
                 .switchIfEmpty(
-                        exe(loginRequest)
+                        createUserAdmin(loginRequest)
                 ).then();
     }
 
-    private Mono<Void> exe(LoginRequest loginRequest) {
+    private Mono<Void> createUserAdmin(LoginRequest loginRequest) {
         User newUser = new User();
         newUser.setUsername(loginRequest.getUsername());
         newUser.setPassword(passwordEncoder.encode(loginRequest.getPassword()));
