@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
-public class LoginRequest {
+public class AuthRequest {
 
     @NotBlank
     @Length(max = 255)

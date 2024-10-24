@@ -1,7 +1,7 @@
 package it.ultraistinct.ordersmanagement.api.auth.facade;
 
-import it.ultraistinct.ordersmanagement.api.auth.request.LoginRequest;
-import it.ultraistinct.ordersmanagement.api.auth.response.LoginResponse;
+import it.ultraistinct.ordersmanagement.api.auth.request.AuthRequest;
+import it.ultraistinct.ordersmanagement.api.auth.response.AuthResponse;
 import it.ultraistinct.ordersmanagement.config.security.JwtService;
 import it.ultraistinct.ordersmanagement.domain.user.entity.User;
 import it.ultraistinct.ordersmanagement.domain.user.service.UserService;
@@ -27,14 +27,14 @@ public class AuthServiceFacade {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
 
-    public Mono<LoginResponse> authenticate(LoginRequest request) {
+    public Mono<AuthResponse> authenticate(AuthRequest request) {
         return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 request.getUsername(), request.getPassword()
         )).flatMap(authentication -> this.userService.findByUsername(request.getUsername()))
            .map(user -> {
 
             var jwtToken = jwtService.buildToken(user);
-            return LoginResponse.builder()
+            return AuthResponse.builder()
                     .token(jwtToken)
                     .build();
         });
@@ -53,19 +53,19 @@ public class AuthServiceFacade {
     }
 
 
-    public Mono<Void> registerNewAdmin(LoginRequest loginRequest) {
+    public Mono<Void> registerNewAdmin(AuthRequest authRequest) {
 
-        return userService.findByUsername(loginRequest.getUsername())
+        return userService.findByUsername(authRequest.getUsername())
                 .flatMap(user -> Mono.error(new RuntimeException("Utente già registrato")))
                 .switchIfEmpty(
-                        createUserAdmin(loginRequest)
+                        createUserAdmin(authRequest)
                 ).then();
     }
 
-    private Mono<Void> createUserAdmin(LoginRequest loginRequest) {
+    private Mono<Void> createUserAdmin(AuthRequest authRequest) {
         User newUser = new User();
-        newUser.setUsername(loginRequest.getUsername());
-        newUser.setPassword(passwordEncoder.encode(loginRequest.getPassword()));
+        newUser.setUsername(authRequest.getUsername());
+        newUser.setPassword(passwordEncoder.encode(authRequest.getPassword()));
         newUser.setEnabled(true);
         newUser.setRole("ADMIN");
 
