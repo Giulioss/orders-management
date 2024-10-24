@@ -34,10 +34,6 @@ public class AuthController {
     @PostMapping("/register")
     @PreAuthorize("hasRole('ADMIN')")
     public Mono<ResponseEntity<Void>> registerNewAdmin(@RequestBody @Valid AuthRequest authenticationRequest) {
-        /* TODO Giulio Galletti 25/06/2024: Possibilità di creare un Advice per evitare questi try/catch??
-            Credo di si, ma ora non ho voglia
-        */
-
         return this.authServiceFacade.registerNewAdmin(authenticationRequest)
                 .then(Mono.just(ResponseEntity.ok().build()));
     }

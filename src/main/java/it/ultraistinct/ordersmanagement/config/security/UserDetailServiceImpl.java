@@ -23,7 +23,7 @@ public class UserDetailServiceImpl implements ReactiveUserDetailsService {
                         .withUsername(user.getUsername())
                         .password(user.getPassword())
                         .authorities(user.getAuthorities())
-                        .roles(user.getRole())
+                        .roles(user.getRole().getDescription())
                         .accountExpired(false)
                         .accountLocked(false)
                         .credentialsExpired(false)

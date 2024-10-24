@@ -1,5 +1,7 @@
 package it.ultraistinct.ordersmanagement.domain.user.entity;
 
+import it.ultraistinct.ordersmanagement.domain.enums.OrderStatusEnum;
+import it.ultraistinct.ordersmanagement.domain.enums.UserRoleEnum;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -15,8 +17,6 @@ import java.util.List;
 @Setter
 public class User implements UserDetails {
 
-    private static final String ROLE_PREFIX = "ROLE_";
-
     @Id
     private Long id;
 
@@ -24,9 +24,16 @@ public class User implements UserDetails {
 
     private String password;
 
-    // TODO Giulio Galletti 20/10/2024: Fare ENUM
     private String role;
     private boolean enabled = true;
+
+    public UserRoleEnum getRole() {
+        return UserRoleEnum.fromString(this.role);
+    }
+
+    public void setRole(UserRoleEnum userRoleEnum) {
+        this.role = userRoleEnum.name();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
