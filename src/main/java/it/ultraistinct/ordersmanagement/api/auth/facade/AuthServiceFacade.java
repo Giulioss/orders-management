@@ -6,16 +6,14 @@ import it.ultraistinct.ordersmanagement.config.security.JwtService;
 import it.ultraistinct.ordersmanagement.domain.enums.UserRoleEnum;
 import it.ultraistinct.ordersmanagement.domain.user.entity.User;
 import it.ultraistinct.ordersmanagement.domain.user.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Slf4j
@@ -42,15 +40,8 @@ public class AuthServiceFacade {
 
     }
 
-    public Mono<Boolean> validateToken(@NonNull HttpServletRequest request) {
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-
-        if (StringUtils.isBlank(authHeader)) {
-            log.warn("Authorization header is null");
-            return Mono.just(false);
-        }
-
-        return jwtService.validateTokenFromAuthHeader(authHeader);
+    public Mono<Boolean> validateToken(@NonNull ServerWebExchange exchange) {
+        return jwtService.validateTokenFromRequest(exchange);
     }
 
 

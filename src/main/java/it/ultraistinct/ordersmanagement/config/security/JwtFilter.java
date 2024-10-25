@@ -2,7 +2,6 @@ package it.ultraistinct.ordersmanagement.config.security;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -32,13 +31,14 @@ public class JwtFilter implements WebFilter {
             return chain.filter(exchange);
         }
 
-        final String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+
+        final String authHeader = this.jwtService.extractAuthorizationHeader(request);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             return chain.filter(exchange);
         }
 
-        final String jwt = authHeader.substring(7);
+        final String jwt = this.jwtService.extractJwtTokenFromStringHeader(authHeader);
         final String userName = this.jwtService.extractUsername(jwt);
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -46,7 +46,7 @@ public class JwtFilter implements WebFilter {
                     .filter(userDetails -> this.jwtService.isTokenValid(jwt, userDetails))
                     .flatMap(userDetails -> {
                         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                                userDetails,
+                                userDetails.getUsername(),
                                 null,
                                 userDetails.getAuthorities()
                         );

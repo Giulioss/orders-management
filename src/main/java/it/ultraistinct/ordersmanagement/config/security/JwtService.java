@@ -6,12 +6,19 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import it.ultraistinct.ordersmanagement.config.SecurityProperties;
 import it.ultraistinct.ordersmanagement.domain.user.entity.User;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.security.Key;
@@ -20,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JwtService {
@@ -28,17 +36,51 @@ public class JwtService {
 
     private final ReactiveUserDetailsService reactiveUserDetailsService;
 
-    public Mono<Boolean> validateTokenFromAuthHeader(String authHeader) {
-        final String jwt = authHeader.substring(7);
-        final String userName = extractUsername(jwt);
+    public Mono<Boolean> validateTokenFromRequest(@NonNull ServerWebExchange exchange) {
+        final String authHeader = this.extractAuthorizationHeader(exchange.getRequest());
 
-        if (StringUtils.isBlank(userName) || SecurityContextHolder.getContext().getAuthentication() == null) {
-            return Mono.empty();
+        if (StringUtils.isBlank(authHeader)) {
+            log.warn("Authorization header is null");
+            return Mono.just(false);
         }
 
-        return reactiveUserDetailsService.findByUsername(userName)
-                .filter(userDetails -> this.isTokenValid(jwt, userDetails))
-                .hasElement();
+        final String jwt = this.extractJwtTokenFromStringHeader(authHeader);
+        final String userName = extractUsername(jwt);
+
+        if (StringUtils.isBlank(userName)) {
+            return Mono.just(false);
+        }
+
+        var userInContext = ReactiveSecurityContextHolder.getContext()
+                .map(SecurityContext::getAuthentication)
+                .map(authentication -> {
+                    if (authentication == null || !authentication.isAuthenticated()) {
+                        return false;
+                    }
+
+                    String usernameInContext = authentication.getName();
+                    return usernameInContext.equals(userName);
+                })
+                .defaultIfEmpty(false);
+
+        return userInContext
+                .flatMap(isValid -> {
+                    if (BooleanUtils.isNotTrue(isValid)) {
+                        return Mono.just(false);
+                    }
+
+                    return reactiveUserDetailsService.findByUsername(userName)
+                            .filter(userDetails -> this.isTokenValid(jwt, userDetails))
+                            .hasElement();
+                });
+    }
+
+    public String extractJwtTokenFromStringHeader(String authHeader) {
+        return authHeader.substring(7);
+    }
+
+    public String extractAuthorizationHeader(ServerHttpRequest exchangeRequest) {
+        return exchangeRequest.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
     }
 
     public String extractUsername(String token) {
