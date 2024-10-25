@@ -1,6 +1,5 @@
 package it.ultraistinct.ordersmanagement.domain.user.entity;
 
-import it.ultraistinct.ordersmanagement.domain.enums.OrderStatusEnum;
 import it.ultraistinct.ordersmanagement.domain.enums.UserRoleEnum;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,8 +20,9 @@ public class User implements UserDetails {
     private Long id;
 
     private String username;
-
     private String password;
+    private String firstname;
+    private String lastname;
 
     private String role;
     private boolean enabled = true;

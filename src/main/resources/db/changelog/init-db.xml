@@ -57,6 +57,15 @@
             <column name="password" type="VARCHAR(500)">
                 <constraints nullable="false"/>
             </column>
+
+            <column name="firstname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="lastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
             <column name="role" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
