@@ -1,10 +1,12 @@
 package it.ultraistinct.ordersmanagement.domain.order.repository;
 
-import it.ultraistinct.ordersmanagement.domain.order.entity.Order;
+import it.ultraistinct.ordersmanagement.domain.order.entity.Orders;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 
-public interface OrderRepository extends ReactiveCrudRepository<Order, Long> {
+import java.util.List;
 
-    Flux<Order> findAllByOrderStatus(final String orderStatus);
+public interface OrderRepository extends ReactiveCrudRepository<Orders, Long> {
+
+    Flux<Orders> findAllByOrderStatusIsIn(final List<String> orderStatus);
 }

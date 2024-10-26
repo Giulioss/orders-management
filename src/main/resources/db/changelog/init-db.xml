@@ -17,9 +17,9 @@
             <column name="fiscal_code" type="VARCHAR(16)"/>
         </createTable>
 
-        <createTable tableName="order">
+        <createTable tableName="orders">
             <column name="id" type="BIGSERIAL">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_order"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_orders"/>
             </column>
             <column name="order_status" type="VARCHAR(30)">
                 <constraints nullable="false"/>
@@ -29,7 +29,7 @@
             <column name="note" type="TEXT"/>
 
             <column name="client_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="FK_order_client"
+                <constraints nullable="false" foreignKeyName="FK_orders_client"
                              referencedTableName="client" referencedColumnNames="id"/>
             </column>
         </createTable>
@@ -40,8 +40,8 @@
             </column>
 
             <column name="order_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="FK_order_step_order"
-                             referencedTableName="order" referencedColumnNames="id"/>
+                <constraints nullable="false" foreignKeyName="FK_order_step_orders"
+                             referencedTableName="orders" referencedColumnNames="id"/>
             </column>
         </createTable>
 
@@ -55,8 +55,8 @@
             </column>
 
             <column name="order_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="FK_order_image_order"
-                             referencedTableName="order" referencedColumnNames="id"/>
+                <constraints nullable="false" foreignKeyName="FK_order_image_orders"
+                             referencedTableName="orders" referencedColumnNames="id"/>
             </column>
         </createTable>
 

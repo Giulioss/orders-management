@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class Order {
+public class Orders {
 
     @Id
     private Long id;
