@@ -15,7 +15,7 @@ public class OrderController {
 
     private final OrderServiceFacade orderServiceFacade;
 
-    @PostMapping
+    @PostMapping("/find")
     public Flux<OrderResponse> getTableOrders(@RequestBody @Validated OrdersFilterRequest filterRequest) {
         return this.orderServiceFacade.getTableOrders(filterRequest);
     }
