@@ -45,6 +45,36 @@
             </column>
         </createTable>
 
+        <createTable tableName="order_image">
+            <column name="id" type="BIGSERIAL">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_order_image"/>
+            </column>
+
+            <column name="image_data" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="order_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_order_image_order"
+                             referencedTableName="order" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="order_step_image">
+            <column name="id" type="BIGSERIAL">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_order_step_image"/>
+            </column>
+
+            <column name="image_data" type="BLOB">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="order_step_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_order_step_image_order_step"
+                             referencedTableName="order_step" referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
         <createTable tableName="user">
             <column name="id" type="BIGSERIAL">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_user"/>
