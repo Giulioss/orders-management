@@ -2,22 +2,15 @@ package it.ultraistinct.ordersmanagement.domain.enums;
 
 import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
 @Getter
 public enum OrderStatusEnum {
 
-    OPEN("APERTA"),
-    ON_GOING("IN CORSO"),
-    CLOSED("CHIUSA");
-
-    private final String description;
-
-    OrderStatusEnum(String description) {
-        this.description = description;
-    }
+    APERTA,
+    IN_CORSO,
+    CHIUSA;
 
     public static OrderStatusEnum fromString(String value) {
         for (OrderStatusEnum statusEnum : OrderStatusEnum.values()) {
