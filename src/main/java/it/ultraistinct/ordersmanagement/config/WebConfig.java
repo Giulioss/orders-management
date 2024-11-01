@@ -4,6 +4,7 @@ import it.ultraistinct.ordersmanagement.config.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.web.ReactivePageableHandlerMethodArgumentResolver;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
@@ -59,5 +60,10 @@ public class WebConfig {
         var authenticationManager = new UserDetailsRepositoryReactiveAuthenticationManager(reactiveUserDetailsService);
         authenticationManager.setPasswordEncoder(passwordEncoder());
         return authenticationManager;
+    }
+
+    @Bean
+    public ReactivePageableHandlerMethodArgumentResolver pageableResolver() {
+        return new ReactivePageableHandlerMethodArgumentResolver();
     }
 }
