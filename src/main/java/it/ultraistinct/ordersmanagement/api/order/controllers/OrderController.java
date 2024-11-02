@@ -1,14 +1,11 @@
 package it.ultraistinct.ordersmanagement.api.order.controllers;
 
 import it.ultraistinct.ordersmanagement.api.order.facades.OrderServiceFacade;
-import it.ultraistinct.ordersmanagement.api.order.responses.OrderResponse;
 import it.ultraistinct.ordersmanagement.api.order.responses.OrdersTableResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
