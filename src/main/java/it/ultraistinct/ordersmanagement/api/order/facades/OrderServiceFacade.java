@@ -4,6 +4,7 @@ import it.ultraistinct.ordersmanagement.api.order.responses.OrderResponse;
 import it.ultraistinct.ordersmanagement.api.order.responses.OrdersTableResponse;
 import it.ultraistinct.ordersmanagement.domain.order.entity.Orders;
 import it.ultraistinct.ordersmanagement.domain.order.service.OrderService;
+import it.ultraistinct.ordersmanagement.mappers.GenericMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import reactor.core.publisher.Mono;
 public class OrderServiceFacade {
 
     private final OrderService orderService;
+    private final GenericMapper genericMapper;
 
     public Mono<OrdersTableResponse> getData(Pageable pageable, String sortBy, String direction) {
         Flux<Orders> res = this.orderService.getData(sortBy, direction);
@@ -25,15 +27,7 @@ public class OrderServiceFacade {
         Flux<OrderResponse> resDto = res
                 .skip((long) pageable.getPageNumber() * pageable.getPageSize())
                 .take(pageable.getPageSize())
-                .map(a -> {
-                    var response = new OrderResponse();
-                    response.setId(a.getId());
-                    response.setStartDateTime(a.getStartDateTime());
-                    response.setEndDateTime(a.getEndDateTime());
-                    response.setOrderStatus(a.getOrderStatus());
-                    response.setNote(a.getNote());
-                    return response;
-                });
+                .map(this.genericMapper::toDto);
 
         return totalElementMono
                 .zipWith(resDto.collectList(), OrdersTableResponse::new
