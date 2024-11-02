@@ -12,6 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrdersTableResponse {
-    private Long totalElement;
+    private Long totalElements;
     private List<OrderResponse> orderResponseList;
 }
