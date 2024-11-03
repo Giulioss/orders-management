@@ -1,6 +1,6 @@
 package it.ultraistinct.ordersmanagement.api.order.responses;
 
-import it.ultraistinct.ordersmanagement.domain.enums.OrderStatusEnum;
+import it.ultraistinct.ordersmanagement.enums.OrderStatusEnum;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -3,7 +3,7 @@ package it.ultraistinct.ordersmanagement.api.auth.facade;
 import it.ultraistinct.ordersmanagement.api.auth.request.AuthRequest;
 import it.ultraistinct.ordersmanagement.api.auth.response.AuthResponse;
 import it.ultraistinct.ordersmanagement.config.security.JwtService;
-import it.ultraistinct.ordersmanagement.domain.enums.UserRoleEnum;
+import it.ultraistinct.ordersmanagement.enums.UserRoleEnum;
 import it.ultraistinct.ordersmanagement.domain.user.entity.User;
 import it.ultraistinct.ordersmanagement.domain.user.service.UserService;
 import lombok.NonNull;

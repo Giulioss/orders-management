@@ -1,6 +1,6 @@
 package it.ultraistinct.ordersmanagement.domain.order.entity;
 
-import it.ultraistinct.ordersmanagement.domain.enums.OrderStatusEnum;
+import it.ultraistinct.ordersmanagement.enums.OrderStatusEnum;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;

@@ -1,6 +1,6 @@
 package it.ultraistinct.ordersmanagement.domain.user.entity;
 
-import it.ultraistinct.ordersmanagement.domain.enums.UserRoleEnum;
+import it.ultraistinct.ordersmanagement.enums.UserRoleEnum;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
