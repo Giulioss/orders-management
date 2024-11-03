@@ -6,6 +6,35 @@
 
 
     <changeSet id="1729006041137-1" author="Giulio Galletti" failOnError="true">
+        <createTable tableName="user">
+            <column name="id" type="BIGSERIAL">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_user"/>
+            </column>
+
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UK_username"/>
+            </column>
+
+            <column name="password" type="VARCHAR(500)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="firstname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="lastname" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="role" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="enabled" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
         <createTable tableName="client">
             <column name="id" type="BIGSERIAL">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="PK_client"/>
@@ -27,6 +56,16 @@
             <column name="start_date_time" type="DATETIME"/>
             <column name="end_date_time" type="DATETIME"/>
             <column name="note" type="TEXT"/>
+
+            <column name="start_user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_orders_start_user"
+                             referencedTableName="user" referencedColumnNames="id"/>
+            </column>
+
+            <column name="end_user_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="FK_orders_end_user"
+                             referencedTableName="user" referencedColumnNames="id"/>
+            </column>
 
             <column name="client_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="FK_orders_client"
@@ -72,35 +111,6 @@
             <column name="order_step_id" type="BIGINT">
                 <constraints nullable="false" foreignKeyName="FK_order_step_image_order_step"
                              referencedTableName="order_step" referencedColumnNames="id"/>
-            </column>
-        </createTable>
-
-        <createTable tableName="user">
-            <column name="id" type="BIGSERIAL">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_user"/>
-            </column>
-
-            <column name="username" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="UK_username"/>
-            </column>
-
-            <column name="password" type="VARCHAR(500)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="firstname" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="lastname" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-            <column name="role" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="enabled" type="BOOLEAN" defaultValueBoolean="false">
-                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
